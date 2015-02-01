@@ -1,0 +1,56 @@
+<html data-ng-app="workspaceApp" ng-csp="">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/popup.css">
+    <link rel="stylesheet" href="css/libs/bootstrap.min.css">
+
+    <!-- JS -->
+    <script src="js/libs/angular-1.1.0.min.js"></script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/popup.js"></script>
+
+</head>
+<body data-ng-controller="workspaceAppController">
+<!-- Header -->
+<h5>
+    <div style="text-align: center">
+        <div style="display: inline-block;">Workspace Organiser</div>
+    </div>
+</h5>
+<ul>
+    <!-- When no workspaces creted -->
+    <div ng-show="!hasworkspaces()">No workspaces</div>
+
+    <!-- List of workspaces -->
+    <li data-ng-repeat="doc in docs">
+        <span>{{doc.name}}</span>
+    </li>
+</ul>
+
+
+<!-- Settings panel -->
+<hr/>
+<div style="text-align: center">
+
+    <!-- Create new workspace from current windows-->
+    <div class="row" style="display: inline-block;">
+        <div class="col-xs-6 col-xs-offset-3">
+            <div class="input-group input-group-sm">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">Save</button>
+            </span>
+                <input type="text" class="form-control" placeholder="Name">
+            </div>
+        </div>
+    </div>
+
+    <!-- Automatically update the current workspace-->
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="automaticallyUpdate">
+            Automatically update
+        </label>
+    </div>
+</div>
+</body>
+</html>

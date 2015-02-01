@@ -1,8 +1,8 @@
 {
-    "name": "Chome Session Organiser",
-    "description": "Manage multiple Chrome sessions",
+    "name": "Chome workspace Organiser",
+    "description": "Manage multiple Chrome workspaces",
     "icons": {
-        "48": "images/icon_72.png"
+        "48": "img/icon_72.png"
     },
     "version": "0.1",
     "permissions": [
@@ -11,12 +11,12 @@
     "background": {
         "persistent": false,
         "scripts": [
-            "javascript/background.js"
+            "js/background.js"
         ]
     },
     "browser_action": {
-        "default_title": "Switch session",
-        "default_popup": "views/popup.html"
+        "default_title": "Switch workspace",
+        "default_popup": "popup.html"
     },
     "manifest_version": 2
 }
