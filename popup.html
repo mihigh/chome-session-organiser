@@ -1,41 +1,42 @@
 <html data-ng-app="workspaceApp" ng-csp="">
-<head>
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="css/popup.css">
-    <link rel="stylesheet" href="css/libs/bootstrap.min.css">
+    <head>
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="css/popup.css">
+        <link rel="stylesheet" href="css/libs/bootstrap.min.css">
 
-    <!-- JS -->
-    <script src="js/libs/angular-1.1.0.min.js"></script>
-    <script src="js/libs/bootstrap.min.js"></script>
-    <script src="js/popup.js"></script>
+        <!-- JS -->
+        <script src="js/libs/angular-1.1.0.min.js"></script>
+        <script src="js/libs/bootstrap.min.js"></script>
+        <script src="js/popup.js"></script>
 
-</head>
-<body data-ng-controller="workspaceAppController">
-<!-- Header -->
-<h5>
-    <div style="text-align: center">
-        <div style="display: inline-block;">Workspace Organiser</div>
-    </div>
-</h5>
-<ul>
-    <!-- When no workspaces creted -->
-    <div ng-show="!hasWorkspaces()">No workspaces</div>
+    </head>
+    <body data-ng-controller="workspaceAppController">
+        <!-- Header -->
+        <h5>
+            <div style="text-align: center">
+                <div style="display: inline-block;">Workspace Organiser</div>
+            </div>
+        </h5>
+        <ul>
+            <!-- When no workspaces creted -->
+            <div ng-show="!hasWorkspaces()">No workspaces</div>
 
-    <!-- List of workspaces -->
-    <li ng-repeat="doc in docs" ng-class="{'currentWorkspace': ($index==currentWorkspacesIndex)}">
-        <span>{{doc.name}} {{$index}}</span>
-    </li>
-</ul>
+            <!-- List of workspaces -->
+            <li ng-repeat="(name, data) in workspacesMetadata.workspaces"
+                ng-class="{'currentWorkspace': (name==workspacesMetadata.currentWorkspaceName)}"
+                ng-click="switchWorkspace(name)">
+                {{name}} {{$index}}
+            </li>
+        </ul>
 
+        <!-- Settings panel -->
+        <hr />
+        <div style="text-align: center">
 
-<!-- Settings panel -->
-<hr/>
-<div style="text-align: center">
-
-    <!-- Create new workspace from current windows-->
-    <div class="row" style="display: inline-block;">
-        <div class="col-xs-8 col-xs-offset-2">
-            <div class="input-group input-group-sm">
+            <!-- Create new workspace from current windows-->
+            <div class="row" style="display: inline-block;">
+                <div class="col-xs-8 col-xs-offset-2">
+                    <div class="input-group input-group-sm">
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="button"
                         ng-show="hasWorkspaces()"
@@ -48,18 +49,18 @@
                     Save new workspace
                 </button>
             </span>
-                <input type="text" class="form-control" placeholder="Name" ng-model="newWorkspaceName">
+                        <input type="text" class="form-control" placeholder="Name" ng-model="newWorkspaceName">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Automatically update the current workspace-->
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="automaticallyUpdate">
+                    Automatically update
+                </label>
             </div>
         </div>
-    </div>
-
-    <!-- Automatically update the current workspace-->
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" ng-model="automaticallyUpdate">
-            Automatically update
-        </label>
-    </div>
-</div>
-</body>
+    </body>
 </html>

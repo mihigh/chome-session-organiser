@@ -6,34 +6,44 @@ function workspaceAppController($scope, $http) {
     $scope.newWorkspaceName = "";
 
     //
-    $scope.workspaces = [];
-    $scope.currentWorkspacesIndex = -1;
-
-    $scope.getAllWorkspace = function () {
-        return $scope.workspaces;
+    $scope.workspacesMetadata = {
+        'currentWorkspaceName': "",
+        'workspaces': {
+        }
     };
 
-    $scope.docs = $scope.getAllWorkspace();
+    $scope.getAllWorkspace = function () {
+        return $scope.workspacesMetadata;
+    };
 
     // Check the number of saved workspaces
     $scope.hasWorkspaces = function () {
-        var allWorkspace = $scope.getAllWorkspace();
-        return angular.isDefined(allWorkspace) && allWorkspace.length != 0;
+        return Object.keys($scope.workspacesMetadata.workspaces).length != 0;
     };
 
     // Create new workspace ==> create a new empty window
     $scope.createNewWorkspace = function (name) {
-        $scope.workspaces.push({"name": name});
+        $scope.workspacesMetadata.currentWorkspaceName = name;
+        var newWorkspace = {
+            "windows": []
+        };
+        $scope.workspacesMetadata.workspaces[name] = newWorkspace;
+
+        chrome.windows.getAll({"populate": true}, function (windows) {
+            windows.forEach(function (window) {
+                chrome.windows.remove(window.id);
+            });
+            chrome.windows.create()
+        });
     }
 
     // Save new workspace from the current windows
     $scope.saveWorkspace = function (name) {
         var newWorkspace = {
-            "name": name,
-            "windows": []
+            'windows': []
         };
 
-        chrome.windows.getAll({"populate": true}, function (windows) {
+        chrome.windows.getAll({'populate': true}, function (windows) {
             windows.forEach(function (window) {
                 var windowTabs = [];
                 window.tabs.forEach(function (tab) {
@@ -43,10 +53,35 @@ function workspaceAppController($scope, $http) {
             })
         });
 
-        $scope.workspaces.push(newWorkspace);
-        $scope.currentWorkspacesIndex = 0;
+        $scope.workspacesMetadata.workspaces[name] = newWorkspace;
+        $scope.workspacesMetadata.currentWorkspaceName = name;
     }
 
+    $scope.switchWorkspace = function (name) {
+        newWorkspace = $scope.workspacesMetadata.workspaces[name];
+        $scope.workspacesMetadata.currentWorkspaceName = name;
+
+        newWorkspace.windows.forEach(function (tabs) {
+            chrome.windows.create({
+                                      'url': tabs
+                                  })
+        })
+    }
+
+    //automatically save workspacesMetadata
+    $scope.$watch('workspacesMetadata', function (newCol, oldCol, scope) {
+        chrome.storage.sync.set({'workspacesMetadata': newCol}, function () {
+        });
+    }, true);
+
+    //automatically load workspacesMetadata
+    chrome.storage.sync.get('workspacesMetadata', function (workspacesMetadata) {
+        if (angular.equals(workspacesMetadata, {})) {
+            return;
+        }
+        $scope.workspacesMetadata = workspacesMetadata.workspacesMetadata;
+        $scope.$apply();
+    })
 }
 
 workspaceAppController.$inject = ['$scope', '$http'];
