@@ -23,13 +23,16 @@
 
             <!-- List of workspaces -->
             <li ng-repeat="(name, data) in workspacesMetadata.workspaces"
-                ng-class="{'list-group-item-success': (name==workspacesMetadata.currentWorkspaceName)}"
+                ng-class="{'list-group-item-success': (name==workspacesMetadata.currentWorkspaceName), 'list-group-item-info': hover}"
                 ng-click="switchWorkspace(name)"
-                class="list-group-item row">
+                class="list-group-item row"
+                ng-mouseenter="hover = true"
+                ng-mouseleave="hover = false">
                 <span class="col-xs-5 col-xs-offset-1">{{name}}</span>
-                <span class="col-xs-2" ng-hide="name!=workspacesMetadata.currentWorkspaceName"><img src="img/edit.png" /> </span>
-                <span class="col-xs-2" ng-hide="name!=workspacesMetadata.currentWorkspaceName"><img src="img/delete.png" /> </span>
-                <span class="col-xs-2" ng-hide="name!=workspacesMetadata.currentWorkspaceName"><img src="img/refresh.png" /> </span>
+                <span class="col-xs-2 edit" ng-hide="name!=workspacesMetadata.currentWorkspaceName"><img src="img/edit.png" /> </span>
+                <span class="col-xs-2 delete" ng-hide="name!=workspacesMetadata.currentWorkspaceName"><img src="img/delete.png" /> </span>
+                <span class="col-xs-2 refresh" ng-hide="name!=workspacesMetadata.currentWorkspaceName"><img src="img/refresh.png" /> </span>
+                <span class="col-xs-6 open" ng-hide="name==workspacesMetadata.currentWorkspaceName || !hover"><img src="img/open.png" /> </span>
 
             </li>
         </ul>
