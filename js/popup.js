@@ -71,6 +71,13 @@ function workspaceAppController($scope, $http) {
     $scope.delete = function (name) {
         delete $scope.workspacesMetadata.workspaces[name];
     }
+    $scope.editName = function (newName) {
+        var oldName = $scope.workspacesMetadata.currentWorkspaceName;
+        $scope.workspacesMetadata.workspaces[newName] = $scope.workspacesMetadata.workspaces[oldName];
+        $scope.workspacesMetadata.currentWorkspaceName = newName;
+        delete $scope.workspacesMetadata.workspaces[oldName];
+
+    }
 
     //automatically save workspacesMetadata
     $scope.$watch('workspacesMetadata', function (newCol, oldCol, scope) {
