@@ -68,6 +68,10 @@ function workspaceAppController($scope, $http) {
         })
     }
 
+    $scope.delete = function (name) {
+        delete $scope.workspacesMetadata.workspaces[name];
+    }
+
     //automatically save workspacesMetadata
     $scope.$watch('workspacesMetadata', function (newCol, oldCol, scope) {
         chrome.storage.sync.set({'workspacesMetadata': newCol}, function () {
