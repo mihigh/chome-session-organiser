@@ -29,12 +29,9 @@ function workspaceAppController($scope, $http) {
         };
         $scope.workspacesMetadata.workspaces[name] = newWorkspace;
 
-        chrome.windows.getAll({"populate": true}, function (windows) {
-            windows.forEach(function (window) {
-                chrome.windows.remove(window.id);
-            });
-            chrome.windows.create()
-        });
+        $scope.closeAllWindows();
+        chrome.windows.create()
+
     }
 
     // Save new workspace from the current windows
@@ -58,6 +55,8 @@ function workspaceAppController($scope, $http) {
     }
 
     $scope.switchWorkspace = function (name) {
+        $scope.closeAllWindows();
+
         newWorkspace = $scope.workspacesMetadata.workspaces[name];
         $scope.workspacesMetadata.currentWorkspaceName = name;
 
@@ -66,6 +65,14 @@ function workspaceAppController($scope, $http) {
                                       'url': tabs
                                   })
         })
+    }
+
+    $scope.closeAllWindows = function () {
+        chrome.windows.getAll({"populate": true}, function (windows) {
+            windows.forEach(function (window) {
+                chrome.windows.remove(window.id);
+            });
+        });
     }
 
     $scope.delete = function (name) {

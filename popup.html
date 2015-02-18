@@ -38,54 +38,53 @@
                 <span class="col-xs-2 edit"
                       ng-click="edit = !edit"
                       ng-hide="name!=workspacesMetadata.currentWorkspaceName">
-                    <img src="img/edit.png" />
+                    <img src="img/edit.png"/>
                 </span>
                 <span class="col-xs-2 delete"
                       ng-click="delete(name)"
                       ng-hide="name!=workspacesMetadata.currentWorkspaceName">
-                    <img src="img/delete.png" />
+                    <img src="img/delete.png"/>
                 </span>
                 <span class="col-xs-2 refresh"
                       ng-click="saveWorkspace(name)"
                       ng-hide="name!=workspacesMetadata.currentWorkspaceName">
-                    <img src="img/refresh.png" />
+                    <img src="img/refresh.png"/>
                 </span>
 
                 <span class="col-xs-3 open"
                       ng-hide="name==workspacesMetadata.currentWorkspaceName || !hover"
                       ng-click="name!=workspacesMetadata.currentWorkspaceName && switchWorkspace(name)">
-                    <img src="img/open.png" />
+                    <img src="img/open.png"/>
                 </span>
                 <span class="col-xs-3 delete"
                       ng-click="delete(name)"
                       ng-hide="name==workspacesMetadata.currentWorkspaceName || !hover">
-                    <img src="img/delete.png" />
+                    <img src="img/delete.png"/>
                 </span>
-
             </li>
         </ul>
 
         <!-- Settings panel -->
-        <hr />
+        <hr/>
         <div style="text-align: center">
 
             <!-- Create new workspace from current windows-->
             <div class="row" style="display: inline-block;">
                 <div class="col-xs-8 col-xs-offset-2">
                     <div class="input-group input-group-sm">
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="button"
-                        ng-show="hasWorkspaces()"
-                        ng-click="createNewWorkspace(newWorkspaceName)">
-                    Create new
-                </button>
-                <button class="btn btn-primary" type="button"
-                        ng-show="!hasWorkspaces()"
-                        ng-click="saveWorkspace(newWorkspaceName)">
-                    Save new workspace
-                </button>
-            </span>
-                        <input type="text" class="form-control" placeholder="Name" ng-model="newWorkspaceName">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button"
+                                ng-show="hasWorkspaces()"
+                                ng-click="createNewWorkspace(newWorkspaceName)">
+                            Create new
+                        </button>
+                        <button class="btn btn-primary" type="button"
+                                ng-show="!hasWorkspaces()"
+                                ng-click="saveWorkspace(newWorkspaceName)">
+                            Save new workspace
+                        </button>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Name" ng-model="newWorkspaceName">
                     </div>
                 </div>
             </div>
