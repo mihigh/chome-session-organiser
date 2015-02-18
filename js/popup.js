@@ -3,7 +3,6 @@ var workspaceApp = angular.module('workspaceApp', []);
 function workspaceAppController($scope, $http) {
 
     $scope.automaticallyUpdate = true;
-    $scope.newWorkspaceName = "";
 
     //
     $scope.workspacesMetadata = {
@@ -86,6 +85,8 @@ function workspaceAppController($scope, $http) {
 
     }
 
+
+    /* workspacesMetadata */
     //automatically save workspacesMetadata
     $scope.$watch('workspacesMetadata', function (newCol, oldCol, scope) {
         chrome.storage.sync.set({'workspacesMetadata': newCol}, function () {
@@ -98,6 +99,20 @@ function workspaceAppController($scope, $http) {
             return;
         }
         $scope.workspacesMetadata = workspacesMetadata.workspacesMetadata;
+        $scope.$apply();
+    });
+
+
+    /* automaticallyUpdate */
+    //automatically save workspacesMetadata
+    $scope.$watch('automaticallyUpdate', function (newCol, oldCol, scope) {
+        chrome.storage.sync.set({'automaticallyUpdate': newCol}, function () {
+        });
+    }, true);
+
+    //automatically load automaticallyUpdate
+    chrome.storage.sync.get('automaticallyUpdate', function (result) {
+        $scope.automaticallyUpdate = result.automaticallyUpdate;
         $scope.$apply();
     })
 }
