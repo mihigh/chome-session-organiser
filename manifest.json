@@ -1,8 +1,10 @@
 {
-    "name": "Chome workspace Organiser",
+    "name": "Chome Workspace Organiser",
     "description": "Manage multiple Chrome workspaces",
+    "short_name": "This extension will help organizing your windows and tabs on what categories.",
     "icons": {
-        "48": "img/icon_72.png"
+        "48": "img/icon_72.png",
+        "128": "img/icon_128.png"
     },
     "version": "0.1",
     "permissions": [
