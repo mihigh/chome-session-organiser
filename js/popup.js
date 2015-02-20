@@ -89,7 +89,6 @@ function workspaceAppController($scope, $http) {
 
     }
 
-
     /* workspacesMetadata */
     //automatically save workspacesMetadata
     $scope.$watch('workspacesMetadata', function (newCol, oldCol, scope) {
@@ -105,7 +104,6 @@ function workspaceAppController($scope, $http) {
         $scope.workspacesMetadata = workspacesMetadata.workspacesMetadata;
         $scope.$apply();
     });
-
 
     /* automaticallyUpdate */
     //automatically save workspacesMetadata
