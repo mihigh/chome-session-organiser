@@ -4,7 +4,6 @@ function workspaceAppController($scope, $http) {
 
     $scope.automaticallyUpdate = true;
 
-    //
     $scope.workspacesMetadata = {
         'currentWorkspaceName': "",
         'workspaces': {
@@ -54,6 +53,10 @@ function workspaceAppController($scope, $http) {
     }
 
     $scope.switchWorkspace = function (name) {
+        if ($scope.automaticallyUpdate == true) {
+            $scope.saveWorkspace($scope.workspacesMetadata.currentWorkspaceName);
+        }
+
         $scope.closeAllWindows();
 
         newWorkspace = $scope.workspacesMetadata.workspaces[name];
@@ -77,6 +80,7 @@ function workspaceAppController($scope, $http) {
     $scope.delete = function (name) {
         delete $scope.workspacesMetadata.workspaces[name];
     }
+
     $scope.editName = function (newName) {
         var oldName = $scope.workspacesMetadata.currentWorkspaceName;
         $scope.workspacesMetadata.workspaces[newName] = $scope.workspacesMetadata.workspaces[oldName];
