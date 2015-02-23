@@ -1,6 +1,6 @@
 var workspaceApp = angular.module('workspaceApp', []);
 
-function workspaceAppController($scope, $http) {
+function workspaceAppController($q, $scope, $http) {
 
     $scope.automaticallyUpdate = true;
 
@@ -34,6 +34,7 @@ function workspaceAppController($scope, $http) {
 
     // Save new workspace from the current windows
     $scope.saveWorkspace = function (name) {
+        var deferred = $q.defer();
         var newWorkspace = {
             'windows': []
         };
@@ -46,35 +47,48 @@ function workspaceAppController($scope, $http) {
                 });
                 newWorkspace.windows.push(windowTabs)
             })
+
+            $scope.workspacesMetadata.workspaces[name] = newWorkspace;
+            $scope.workspacesMetadata.currentWorkspaceName = name;
+
+            deferred.resolve();
         });
 
-        $scope.workspacesMetadata.workspaces[name] = newWorkspace;
-        $scope.workspacesMetadata.currentWorkspaceName = name;
+        return deferred.promise;
     }
 
     $scope.switchWorkspace = function (name) {
+        var promises = [];
         if ($scope.automaticallyUpdate == true) {
-            $scope.saveWorkspace($scope.workspacesMetadata.currentWorkspaceName);
+            promises.push($scope.saveWorkspace($scope.workspacesMetadata.currentWorkspaceName));
         }
 
-        $scope.closeAllWindows();
+        $q.all(promises).then(function () {
+            $scope.closeAllWindows()
 
-        newWorkspace = $scope.workspacesMetadata.workspaces[name];
-        $scope.workspacesMetadata.currentWorkspaceName = name;
+            newWorkspace = $scope.workspacesMetadata.workspaces[name];
+            $scope.workspacesMetadata.currentWorkspaceName = name;
 
-        newWorkspace.windows.forEach(function (tabs) {
-            chrome.windows.create({
-                                      'url': tabs
-                                  })
+            newWorkspace.windows.forEach(function (tabs) {
+                chrome.windows.create({
+                                          'url': tabs
+                                      })
+            })
         })
     }
 
     $scope.closeAllWindows = function () {
+        var deferred = $q.defer();
+
         chrome.windows.getAll({"populate": true}, function (windows) {
             windows.forEach(function (window) {
                 chrome.windows.remove(window.id);
-            });
+            })
+
+            deferred.resolve();
         });
+
+        return deferred.promise;
     }
 
     $scope.delete = function (name) {
@@ -119,5 +133,5 @@ function workspaceAppController($scope, $http) {
     })
 }
 
-workspaceAppController.$inject = ['$scope', '$http'];
+workspaceAppController.$inject = ['$q', '$scope', '$http'];
 
